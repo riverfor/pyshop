@@ -1,8 +1,13 @@
 {% extends "/pyshop/layout.html" %}
 
-{% block subnav %}
-    <h1>{{package.name}} {{release.version}}</h1>
+{% block nav_main %}
+    <a class="navbar-brand" href='#'>{{package.name}} {{release.version}}</a>
 {% endblock %}
+
+{% block subnav %}{% endblock %}
+{% block nav_second %}{% endblock %}
+
+{% block nav_bar %}{% endblock %}
 
 {% block toolbar %}
 {% endblock %}
@@ -11,11 +16,11 @@
     {% for f in release.files %}
         {% if f.package_type == 'sdist' %}
             <p>
-            <a class="btn btn-success btn-sm active" role="button"
-               href="{{ route_url('show_release_file', file_id=f.id, filename=f.filename)
-                       }}#{{ f.md5_digest }}">
+            <a class="btn btn-success btn-lg active" role="button"
+               href="javascript:milib.pip_install('{{ route_url('show_release_file', file_id=f.id, filename=f.filename)
+                       }}#{{ f.md5_digest }}')">
               <span class="glyphicon glyphicon-download-alt"></span>
-              Download ({{f.filename}})</a></p>
+              Install ({{f.filename}})</a></p>
         {% endif %}
     {% endfor %}
     <p>Other Version: 
@@ -73,13 +78,16 @@
     </ul>
     <div id="myTabContent" class="tab-content">
       <div class="tab-pane fade in active" id="Desc">
-        <div class="panel panel-default">
+        <div class="panel panel-default" style='border-top:0px'>
           <div class="panel-body">
             {{ parse_rest(release.description) }}
           </div>
         </div>
       </div>
       <div class="tab-pane fade" id="Classif">
+        <div class="panel panel-default" style='border-top:0px'>
+          <div class="panel-body">
+
     <dl class="dl-horizontal">
         <dt>{% trans %}Type:{% endtrans %}</dt>
         <dd>{% if release.package.local %}
@@ -115,15 +123,20 @@
         {% endif %}
     </dl>
 
+          </div>
+        </div>
       </div>
       <div class="tab-pane fade" id="Release">
+        <div class="panel panel-default" style='border-top:0px'>
+          <div class="panel-body">
+
     <table class="table table-hover table-condensed">
       <thead>
         <tr>
-            <th>{% trans %} files {% endtrans %}</th>
-            <th>{% trans %} version {% endtrans %}</th>
-            <th>{% trans %} author {% endtrans %}</th>
-            <th>{% trans %} downloads {% endtrans %}</th>
+            <td>{% trans %} Files {% endtrans %}</td>
+            <td>{% trans %} version {% endtrans %}</td>
+            <td>{% trans %} author {% endtrans %}</td>
+            <td>{% trans %} downloads {% endtrans %}</td>
         </tr>
        </thead>
       <tbody>
@@ -131,9 +144,9 @@
         <tr>
             <td>
                 <a class="download"
-                   href="{{ route_url('show_release_file', file_id=file.id,
+                   href="javascript:milib.pip_install('{{ route_url('show_release_file', file_id=file.id,
                             filename=file.filename)
-                           }}#{{ file.md5_digest }}">{{file.filename}}
+                           }}#{{ file.md5_digest }}')">{{file.filename}}
                 </a>
             </td>
             <td class="num">
@@ -148,6 +161,8 @@
       </tbody>
     </table>
 
+          </div>
+        </div>
       </div>
     </div>
 

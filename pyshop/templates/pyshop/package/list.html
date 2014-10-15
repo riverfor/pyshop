@@ -1,5 +1,12 @@
 {% extends "/pyshop/layout.html" %}
 
+{% block nav_main %}
+    <a class="navbar-brand" href="{{route_url('index')}}">Packages <span class="badge">{{package_count}}</span></a>
+{% endblock %}
+
+{% block nav_second %}{% endblock %}
+
+{% block nav_bar %}{% endblock %}
 
 {% block header %}
     <script  type="text/javascript" src="{{ static_url('pyshop:static/js/bootstrap3-typeahead.js') }}"></script>
@@ -13,15 +20,17 @@
 {% block main %}
 
 <form class="form-inline" role="form" method="GET">
-  <!-- /input-group -->
-  <div class="form-group">
-    <label class="sr-only" for="classifier">Filter</label>
-    <input type="text" id="classifier" class="form-control"  
-           data-provide="typeahead" data-items="4"
-           data-link="{{ static_url('pyshop:static/classifications.json') }}"
-           name="classifier.added" value="" />
-  </div>
-  <button type="submit"  class="btn btn-primary" id="submitter" name="form.submitted"> Filter</button>
+  <div class="input-group">
+    <input type="text" id="classifier" 
+        data-provide="typeahead" data-items="4"
+        data-link="{{ static_url('pyshop:static/classifications.json') }}"
+        name="classifier.added" value=""
+        class="form-control">
+    <span class="input-group-btn">
+      <button class="btn btn-default" id="submitter" name="form.submitted" type="submit">Classifiers filter</button>
+    </span>
+  </div><!-- /input-group -->
+
   <div class="checkbox">
     <label>
       <input type="checkbox" id="source_local" name="local_only" value="1" onchange="$('#submitter').click()" 
@@ -41,13 +50,15 @@
 
 </form>
 
-<table class="table table-hover table-condensed">
+<br />
+
+<table class="table">
 <thead>
     <tr>
-        <th>{% trans %} package {% endtrans %}</th>
-        <th>{% trans %} last version {% endtrans %}</th>
-        <th>{% trans %} # downloads {% endtrans %}</th>
-        <th>{% trans %} source {% endtrans %}</th>
+        <td><strong>{% trans %} Package {% endtrans %}</strong></td>
+        <td><strong>{% trans %} last version {% endtrans %}</strong></td>
+        <td><strong>{% trans %} source {% endtrans %}</strong></td>
+        <td><strong>{% trans %} # downloads {% endtrans %}</strong></td>
     </tr>
 </thead>
 <tbody>
@@ -60,7 +71,6 @@
                 </a>
             </td>
             <td class="num">{{ pkg.versions[0] }}</td>
-            <td class="num">{{ pkg.downloads }}</td>
             <td class="num">
                 {% if pkg.local %}
                     {% trans %} local {% endtrans %}
@@ -68,6 +78,7 @@
                     {% trans %} mirror {% endtrans %}
                 {% endif %}
             </td>
+            <td class="num">{{ pkg.downloads }}</td>
         </tr>
     {% endfor %}
 </tbody>
